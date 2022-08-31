@@ -10,12 +10,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final Stream<QuerySnapshot> _madStream =
-      FirebaseFirestore.instance.collection('mad').snapshots();
+      FirebaseFirestore.instance.collection('mad').orderBy('title').snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Blog"),
+        title: const Text("All Blogs"),
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -41,35 +41,38 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.white),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.blue,
-                                child: Text(
-                                  "${data['title'][0]}",
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.blue,
+                                  child: Text(
+                                    "${data['title'][0]}",
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${data['title']}",
                                   style: const TextStyle(color: Colors.black),
                                 ),
-                              ),
-                              Text(
-                                "${data['title']}",
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.arrow_forward_ios)),
-                            ],
-                          ),
-                          Image.network(data['image']),
-                          Text(
-                            "${data['des']}",
-                            maxLines: 10,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ],
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.arrow_forward_ios)),
+                              ],
+                            ),
+                            Image.network(data['image']),
+                            Text(
+                              "${data['des']}",
+                              textAlign: TextAlign.justify,
+                              maxLines: 10,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
